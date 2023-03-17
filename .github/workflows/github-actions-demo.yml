@@ -1,18 +1,44 @@
+# workflow 名称
 name: GitHub Actions Demo
+# run名称
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+# 触发条件
 on: [push]
+# 环境变量, workflow级别的全局变量
+env:
+  GLOBAL_VAR_NAME: "global var name"
+# 一个 workflow 由一个或多个 job 组成, jobs 并行运行
+# 可通过给 job 设置 needs 将 job 穿行运行
+# 例如 needs: job1 表明当前 job 需要在 job1 之后运行, needs: [job1, job2] 表示需要在 job1 和 job2 之后运行. 其中 job1, job2 是其他 job 的 ID 
 jobs:
-  Explore-GitHub-Actions:
+  # job ID, 当前 job 的唯一标识, 可用于流程控制
+  job_0:
+    # job 名称
+    name: "Job 0"
+    # 运行环境
     runs-on: ubuntu-latest
+    # 环境变量, job级别的局部变量
+    env:
+      LOCAL_VAR_NAME: "local var name"
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: echo "在job0中获取全局环境变量 $GLOBAL_VAR_NAME, 局部环境变量 $LOCAL_VAR_NAME"
+      - run: echo "This job's status is ${{ job.status }}."
+  job_id_0:
+    name: "Job name"
+    runs-on: ubuntu-latest
+    needs: job_0
+    steps:
+      - run: echo "1. job's status ${{ job.status }}."
+      - run: echo "2. 全局环境变量 $GLOBAL_VAR_NAME, 局部环境变量 $LOCAL_VAR_NAME"
+      - run: echo "2. job's status ${{ job.status }}."
+#      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+#      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+#      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+#      - name: Check out repository code
+#        uses: actions/checkout@v3
+#      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+#      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+#      - name: List files in the repository
+#        run: |
+#          ls ${{ github.workspace }}
+#      - run: echo "🍏 This job's status is ${{ job.status }}."
