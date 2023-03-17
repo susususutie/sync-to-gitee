@@ -20,7 +20,17 @@ jobs:
     # 环境变量, job级别的局部变量
     env:
       LOCAL_VAR_NAME: "local var name"
+    # 当前job的输出, 在其他job中可通过 ${{needs.<job_id>.outputs.<output_name>}} 获取
+    outputs:
+      # 把当前job每一步的输出映为到当前job的整体输出
+      output1: ${{ steps.step1.outputs.test }}
+      output2: ${{ steps.step2.outputs.demo }}
     steps:
+      # 每一个step都可以设置id, 以便于获取当前步骤的输出
+      - id: step1
+        run: echo "test=hello" >> "$GITHUB_OUTPUT"
+      - id: step2
+        run: echo "demo='job_0\'s step2\'s output'" >> "$GITHUB_OUTPUT"
       - run: echo "在job0中获取全局环境变量 $GLOBAL_VAR_NAME, 局部环境变量 $LOCAL_VAR_NAME"
       - run: echo "This job's status is ${{ job.status }}."
   job_id_0:
@@ -29,8 +39,13 @@ jobs:
     needs: job_0
     steps:
       - run: echo "1. job's status ${{ job.status }}."
-      - run: echo "2. 全局环境变量 $GLOBAL_VAR_NAME, 局部环境变量 $LOCAL_VAR_NAME"
-      - run: echo "2. job's status ${{ job.status }}."
+      - run: echo "2. 全局环境变量 $GLOBAL_VAR_NAME, 获取不到上一个job的局部环境变量 $LOCAL_VAR_NAME"
+      # step级别的环境变量, 将上一个job的输出map到环境变量上使用
+      - env:
+          OUTPUT1: ${{needs.job_0.outputs.output1}}
+          OUTPUT2: ${{needs.job_0.outputs.output2}}
+        run: echo "2. $OUTPUT1 $OUTPUT2"
+      - run: echo "3. job's status ${{ job.status }}."
 #      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 #      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
 #      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
