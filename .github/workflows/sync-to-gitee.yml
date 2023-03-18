@@ -45,6 +45,7 @@ jobs:
           dst: gitee/susususutie
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token: ${{ secrets.GITEE_TOKEN }}
+          clone_style: "ssh"
           static_list: '${{ steps.repo.outputs.repoList }}'
           cache_path: /github/workspace/hub-mirror-cache
           account_type: user
