@@ -18,6 +18,13 @@ jobs:
     - name: Checkout source codes
       uses: actions/checkout@v1
       
+      - name: Generate repo list
+        id: repo
+        uses: yi-Xu-0100/repo-list-generator@v1.0.0
+
+      - name: Echo repo list
+        run: echo '${{ steps.repo.outputs.repoList }}'
+
     - name: Mirror Github to Gitee with white list
       uses: Yikun/hub-mirror-action@master
       with:
@@ -25,6 +32,7 @@ jobs:
         dst: gitee/susususutie
         dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
         dst_token:  ${{ secrets.GITEE_TOKEN }}
-        static_list: 'pacman,learn-python'
+        static_list: '${{ steps.repo.outputs.repoList }}'
+        # account_type: user
         force_update: true
         debug: true
