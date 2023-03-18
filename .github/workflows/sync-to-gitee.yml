@@ -1,9 +1,5 @@
-name: sync2gitee(list)
-# version: 1。1.0
-# author: [yiXu](https://github.com/yi-Xu-0100)
-# guide: [yi-Xu-0100/hub-mirror](https://github.com/yi-Xu-0100/hub-mirror)
-# template: [sync2gitee.list.yml](https://github.com/yi-Xu-0100/hub-mirror/blob/main/template/sync2gitee.list.yml)
-# lastmod: 2021-02-02 10:23:02
+name: Sync To Gitee
+description: 每天凌晨 02:30 自动同步所有仓库至 Gitee, 不包括本仓库.
 
 on:
   workflow_dispatch:
@@ -12,7 +8,7 @@ on:
 
 jobs:
   run:
-    name: Run
+    name: Sync Job
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source codes
