@@ -47,6 +47,7 @@ jobs:
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token: ${{ secrets.GITEE_TOKEN }}
           static_list: '${{ steps.repo.outputs.repoList }}'
+          black_list: 'sync-to-gitee'
           cache_path: /github/workspace/hub-mirror-cache
           account_type: user
           force_update: true
