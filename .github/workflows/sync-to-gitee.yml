@@ -18,8 +18,10 @@ jobs:
     - name: Get repository list exclude private and fork
       id: repo
       uses: yi-Xu-0100/repo-list-generator@v1.0.1
+    - name: 生成仓库列表(仅非fork且非private的仓库)
+      run: echo ${{ steps.repo.outputs.repoList }}
     - name: Mirror repository list exclude private and fork
-      uses: Yikun/hub-mirror-action@master
+      uses: Yikun/hub-mirror-action@main
       with:
         src: github/susususutie
         dst: gitee/susususutie
