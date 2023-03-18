@@ -33,6 +33,7 @@ jobs:
         dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
         dst_token:  ${{ secrets.GITEE_TOKEN }}
         static_list: '${{ steps.repo.outputs.repoList }}'
-        # account_type: user
+        account_type: user
+        black_list: 'sync-to-gitee'
         force_update: true
         debug: true
