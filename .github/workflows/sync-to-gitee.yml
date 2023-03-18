@@ -8,30 +8,23 @@ name: sync2gitee(list)
 on:
   workflow_dispatch:
   schedule:
-    # UTC 17:30 -> CST (China) 1:30 see https://datetime360.com/cn/utc-cst-china-time/
-    - cron: '30 17 * * *'
+    - cron: '30 18 * * *'
 
 jobs:
   run:
-    name: Sync GitHub to Gitee(list)
+    name: Run
     runs-on: ubuntu-latest
     steps:
-      - name: Generate repo list
-        id: repo
-        uses: yi-Xu-0100/repo-list-generator@v1.0.0
-        
-      - name: Mirror Github to Gitee with white list
-        uses: Yikun/hub-mirror-action@master
-        with:
-          src: github/susususutie
-          dst: gitee/susususutie
-          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
-          dst_token: ${{ secrets.GITEE_TOKEN }}
-          static_list: 'pacman'
-          account_type: user
-          force_update: true
-          debug: true
-
-      - name: Print cache path
-        run: |
-          ls -la ${{ github.workspace }}/hub-mirror-cache
+    - name: Checkout source codes
+      uses: actions/checkout@v1
+      
+    - name: Mirror Github to Gitee with white list
+      uses: Yikun/hub-mirror-action@master
+      with:
+        src: github/susususutie
+        dst: gitee/susususutie
+        dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+        dst_token:  ${{ secrets.GITEE_TOKEN }}
+        static_list: 'pacman,learn-python'
+        force_update: true
+        debug: true
