@@ -18,12 +18,12 @@ jobs:
     - name: Checkout source codes
       uses: actions/checkout@v1
       
-      - name: Generate repo list
-        id: repo
-        uses: yi-Xu-0100/repo-list-generator@v1.0.0
+    - name: Generate repo list
+      id: repo
+      uses: yi-Xu-0100/repo-list-generator@v1.0.0
 
-      - name: Echo repo list
-        run: echo '${{ steps.repo.outputs.repoList }}'
+    - name: Echo repo list
+      run: echo '${{ steps.repo.outputs.repoList }}'
 
     - name: Mirror Github to Gitee with white list
       uses: Yikun/hub-mirror-action@master
